@@ -2,10 +2,10 @@
 
 namespace Src.Basic
 {
-    public class BoardSection : IBoardSection<int>
+    public class BoardSection : ISlot<int>
     {
 
-        private int _amount;
+        private int _size;
         private readonly int[] _positions;
 
         public int[] Positions
@@ -20,7 +20,7 @@ namespace Src.Basic
         {
             get
             {
-                return _amount == _positions.Length;
+                return _size == _positions.Length;
             }
         }
 
@@ -28,8 +28,8 @@ namespace Src.Basic
         {
             if(!Full)
             {
-                this._positions [_amount] = position;
-                _amount++;
+                this._positions [_size] = position;
+                _size++;
             }
         }
 

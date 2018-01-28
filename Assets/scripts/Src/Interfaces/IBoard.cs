@@ -1,10 +1,12 @@
 ﻿namespace Src.Interfaces
 {
-    public interface IBoard<T>
+    public interface IBoard<T, H>
     {
-        void Put(IBoardItem<T> target);
-        void Put(IBoardItem<T>[] targets);
+        IPoint<H>[] FreePoints { get; }
 
-        IBoardItem<T> Get(IBoardItem<T> point);
+        void Put(T target, IPoint<H> point);
+
+        T Get(IPoint<H> point);
+        
     }
 }

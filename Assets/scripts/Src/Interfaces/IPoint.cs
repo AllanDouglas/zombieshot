@@ -1,6 +1,6 @@
 ﻿namespace Src.Interfaces
 {
-    public interface IBoardPoint<T>
+    public interface IPoint<T>
     {
         T Point { get; }
     }

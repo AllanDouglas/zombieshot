@@ -2,7 +2,7 @@
 
 namespace Src.Basic
 {
-    public class BasicPoint : IBoardPoint<int>
+    public class BasicPoint : IPoint<int>
     {
         private int _point;
 

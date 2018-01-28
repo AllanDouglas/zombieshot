@@ -1,90 +1,97 @@
 ﻿using Src.Interfaces;
 using System.Collections.Generic;
-using Src.Extensions;
+using Src.Exceptions;
 
 namespace Src.Basic
 {
-    public class CircleBoard : IBoard<int>
+    public class CircleBoard : IBoard<IItem, int>
     {
-        private readonly IBoardItem<int>[] _itens;
+        private readonly IDictionary<int, IItem> _itens;
         private readonly int _size = 360;
-
-
-        public IBoardItem<int> Get(IBoardItem<int> point)
-        {
-
-            for (int i = 0; i < point.Range; i++)
-            {
-                int position = i + point.Position.Point;
-                IBoardItem<int> item = _itens[position];
-
-                if (item != null)
-                {
-                    return item;
-                }
-
-            }
-
-            return null;
-        }
-
-        public void Put(IBoardItem<int> target)
-        {
-            List<int[]> empty = GetEmptySections(target.Range).Shuffle() as List<int[]>;
-
-            System.Array.ForEach(empty[0], (int position) =>
-            {
-                _itens[position] = target;
-            });
-
-        }
-
-        public void Put(IBoardItem<int>[] targets)
-        {
-            System.Array.ForEach(targets, (target) =>
-            {
-                Put(target);
-            });
-        }
 
         public CircleBoard()
         {
-            _itens = new IBoardItem<int>[this._size];
+            _itens = new Dictionary<int, IItem>();
         }
 
-        private IList<IBoardSection<int>> GetEmptySections(int range)
+        public IPoint<int>[] FreePoints
         {
-            List<IBoardSection<int>> areas = new List<IBoardSection<int>>();
-            BoardSection section = new BoardSection(range);
-            for (int i = 0; i < _size; i++)
+            get
             {
+                List<IPoint<int>> points = new List<IPoint<int>>();
 
-                for (int j = 0; j < range; j++)
+                for (int i = 0; i < this._size; i++)
                 {
-                    int position = i + j;
-                    if (position > _size)
-                    {
-                        position = j;
-                    }
-
-                    if (_itens.Length < position && this._itens[position] != null)
-                    {
-                        break;
-                    }
-
-                    section.Add(position);
+                    IPoint<int> point = new BasicPoint(i);
+                    IItem item;
+                    bool founded = this.Touch(point, out item);
+                    if (!founded) points.Add(point);
 
                 }
 
-                if (section.Full)
+                return points.ToArray();
+            }
+        }
+
+        public IItem Get(IPoint<int> point)
+        {
+
+            IItem item;
+            bool founded = this.Touch(point, out item);
+
+            if (founded) return item;
+
+            throw new BoardException("Item not found");
+
+        }
+
+        public void Put(IItem target, IPoint<int> point)
+        {
+            if (point.Point > this._size)
+            {
+                throw new BoardException("point outside board");
+            }
+
+            if (this._itens.ContainsKey(point.Point))
+            {
+                this._itens.Remove(point.Point);
+            }
+
+            this._itens.Add(point.Point, target);
+        }
+
+        private bool Touch(IPoint<int> point, out IItem item)
+        {
+
+            foreach (int position in this._itens.Keys)
+            {
+                item = this._itens[position];
+
+
+                var points = new List<int>();
+
+                for (int i = 0; i < item.Range; i++)
                 {
-                    areas.Add(section);
-                    section = new BoardSection(range);
+
+                    var pos = position + i;
+
+                    if (pos > 360)
+                    {
+                        pos -= 360;
+                    }
+
+                    points.Add(pos);
                 }
+
+                if (points.Contains(point.Point)) return true;
 
             }
 
-            return areas;
+            item = null;
+            return false;
+
+
         }
+
     }
 }

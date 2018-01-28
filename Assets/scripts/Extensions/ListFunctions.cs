@@ -6,22 +6,14 @@ namespace Src.Extensions
     public static class ListFunctions
     {
 
-        public static IList<T> Shuffle<T>(this IList<T> list)
+        public static T First<T>(this T[] list)
         {
+            return list[0];
+        }
 
-            T[] newArray = new T[list.Count];
-
-            for (int i = 0; i < list.Count; i++)
-            {
-                int index = UnityEngine.Random.Range(0, list.Count);
-                T tmp = list[i];
-                newArray[i] = list[index];
-                newArray[index] = tmp;
-
-            }
-            List<T> newList = new List<T>();
-            newList.AddRange(newArray);
-            return newList;
+        public static T Last<T>(this T[] list)
+        {
+            return list[list.Length - 1];
         }
 
         public static T[] Shuffle<T>(this T[] array)

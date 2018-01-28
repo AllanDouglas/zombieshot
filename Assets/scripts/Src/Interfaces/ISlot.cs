@@ -1,9 +1,9 @@
 ﻿namespace Src.Interfaces
 {
-    internal interface IBoardSection<T>
+    internal interface ISlot<T>
     {
         T[] Positions { get; }
         bool Full { get; }
-        void Add(T position);        
+        void Add(T position);
     }
 }

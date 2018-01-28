@@ -1,6 +1,6 @@
 ﻿namespace Src.Interfaces
 {
-    public interface IUndead
+    public interface IActor
     {
         void Die();
     }
