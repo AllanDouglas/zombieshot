@@ -1,8 +1,9 @@
 ﻿using Src.Interfaces;
 using System.Collections.Generic;
 using Src.Exceptions;
+using Src.Basic;
 
-namespace Src.Basic
+namespace Src.Game
 {
     public class CircleBoard : IBoard<IItem, int>
     {

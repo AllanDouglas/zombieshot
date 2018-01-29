@@ -2,7 +2,7 @@
 
 namespace Src.Basic
 {
-    public class BoardItem : IItem
+    public abstract class BoardItem : IItem
     {
 
         public int Range
@@ -10,8 +10,7 @@ namespace Src.Basic
             get;
             private set;
         }
-
-
+        
         public BoardItem(int range)
         {
             this.Range = range;

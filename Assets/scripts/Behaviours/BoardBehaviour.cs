@@ -1,5 +1,5 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using Src.Game;
+using Src.Interfaces;
 using UnityEngine;
 
 namespace Behavious
@@ -8,10 +8,7 @@ namespace Behavious
     public class BoardBehaviour : MonoBehaviour
     {
 
-        private GameObject[] targets;
-
-        private GameObject look;
-
+        private IBoard<IItem, int> board = new CircleBoard();
 
         // Use this for initialization
         void Start()

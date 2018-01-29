@@ -3,6 +3,7 @@ using NUnit.Framework;
 using System.Collections;
 using Src.Interfaces;
 using Src.Basic;
+using Src.Game;
 
 namespace Src.Tests
 {
@@ -16,7 +17,7 @@ namespace Src.Tests
 
             IBoard<IItem, int> board = new CircleBoard();
 
-            IItem item = new BoardItem(5);
+            IItem item = new Target(5);
             IPoint<int> point = new BasicPoint(1);
             board.Put(item, point);
 
@@ -31,7 +32,7 @@ namespace Src.Tests
 
             IBoard<IItem, int> board = new CircleBoard();
 
-            IItem item = new BoardItem(5);
+            IItem item = new Target(5);
             IPoint<int> point = new BasicPoint(360);
             board.Put(item, point);
 
@@ -55,7 +56,7 @@ namespace Src.Tests
         {
             IBoard<IItem, int> board = new CircleBoard();
 
-            IItem item = new BoardItem(5);
+            IItem item = new Target(5);
             IPoint<int> point = new BasicPoint(1);
             board.Put(item, point);
 
@@ -71,6 +72,17 @@ namespace Src.Tests
                     typeof(Exceptions.BoardException),
                     new TestDelegate(GetingOutSideItem)
             );
+
+        }
+        [Test]
+        public void CauseDamage()
+        {
+
+            IDamageable target = new DamageableTarget(5, 5);
+
+            target.Damage(2);
+
+            Assert.AreEqual(target.Health, 3);
 
         }
 
@@ -89,7 +101,7 @@ namespace Src.Tests
 
             IBoard<IItem, int> board = new CircleBoard();
 
-            IItem item = new BoardItem(5);
+            IItem item = new Target(5);
             IPoint<int> point = new BasicPoint(1);
             board.Put(item, point);
             board.Get(new BasicPoint(360));
