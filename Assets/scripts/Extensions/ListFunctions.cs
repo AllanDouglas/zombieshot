@@ -1,9 +1,7 @@
 ﻿
-using System.Collections.Generic;
-
-namespace Src.Extensions
+namespace Zombieshot.Extensions
 {
-    public static class ListFunctions
+    public static class ArrayFunctions
     {
 
         public static T First<T>(this T[] list)
