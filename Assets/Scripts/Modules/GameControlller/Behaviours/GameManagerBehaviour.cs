@@ -10,5 +10,13 @@ namespace Zombieshot.Game
         [Inject]
         private IGameManager gameManager;
 
+        [Inject]
+        private ISpawner spawner;
+
+        private void Start()
+        {
+            this.spawner.Spawn();
+        }
+
     }
 }

@@ -6,7 +6,9 @@
 
         void Put(T target, IPoint<H> point);
 
-        T Get(IPoint<H> point);
+        void Remove(T target);
+
+        T Get(IPoint<H> point, IWeapon weapon);
         
     }
 }

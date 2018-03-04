@@ -10,24 +10,24 @@ namespace Zombieshot.Game
     {
 
         private ISpawner spawner;
-        private TargetBehaviour weapon;
-        private IBoard<IEnemy, Vector2> board;
-
+        private TargetBehaviour player;
+        private ICircleBoardService board;
+        private BoardEnemyBehaviour.Pool enemyPool;
 
         [Inject]
         public GameControllerService(
+            BoardEnemyBehaviour.Pool enemyPool,
             IInputManager inputManager,
             TargetBehaviour weapon,
-            IBoard<IEnemy, Vector2> board,
+            ICircleBoardService board,
             ISpawner spawner
             ) : base(inputManager)
         {
+            this.enemyPool = enemyPool;
             this.spawner = spawner;
             this.board = board;
             this.inputManager.AddListener(this.OnTouch);
-            this.weapon = weapon;
-
-            
+            this.player = weapon;
         }
 
         public void Dispose()
@@ -37,17 +37,25 @@ namespace Zombieshot.Game
 
         private void OnTouch()
         {
-            var pos = this.weapon.GetLookPosition();
-            Debug.LogFormat("look position: {0}", pos);
+            var pos = this.player.GetLookPosition(this.board.Radius);
             try
             {
-                Debug.LogFormat("item founded: {0}", this.board.Get(pos));
+                this.EnemyFound(this.board.Get(pos, this.player.Weapon));
             }
             catch (Exceptions.BoardException)
             { }
 
-            
         }
 
+        private void EnemyFound(IEnemy enemy)
+        {
+            enemy.Damage((int)this.player.Weapon.Power);
+
+            if(enemy.Health <= 0)
+            {
+                this.enemyPool.Despawn(enemy);
+            }
+
+        }
     }
 }

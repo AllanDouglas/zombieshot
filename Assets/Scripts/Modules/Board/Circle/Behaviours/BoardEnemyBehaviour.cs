@@ -1,6 +1,7 @@
 ﻿using Zombieshot.Engine;
 using UnityEngine;
 using Zenject;
+using System.Collections.Generic;
 
 namespace Zombieshot.Game
 {
@@ -21,21 +22,40 @@ namespace Zombieshot.Game
             get;
             private set;
         }
-        
-        private void Update()
-        {
-            if (this.Enemy.Health <= 0)
-            {
-                this.pool.Despawn(this);
-            }
-        }
-
 
         public class Pool : MonoMemoryPool<IEnemy, BoardEnemyBehaviour>
         {
+
+            private HashSet<BoardEnemyBehaviour> activeItens =
+                new HashSet<BoardEnemyBehaviour>();
+
             protected override void Reinitialize(IEnemy enemy, BoardEnemyBehaviour item)
             {
                 item.Enemy = enemy;
+            }
+
+            protected override void OnSpawned(BoardEnemyBehaviour item)
+            {
+                base.OnSpawned(item);
+                this.activeItens.Add(item);
+            }
+
+            protected override void OnDespawned(BoardEnemyBehaviour item)
+            {
+                base.OnDespawned(item);
+                this.activeItens.Remove(item);
+            }
+
+            public void Despawn(IEnemy enemy)
+            {
+                foreach (var item in this.activeItens)
+                {
+                    if (item.Enemy.Equals(enemy))
+                    {
+                        this.Despawn(item);
+                        break;
+                    }
+                }
             }
         }
     }

@@ -15,7 +15,7 @@ namespace Zombieshot.Game
 
         public override void InstallBindings()
         {
-            Container.Bind<IBoard<IEnemy, Vector2>>().To<CircleBoardService>().AsTransient();
+            Container.Bind<ICircleBoardService>().To<CircleBoardService>().AsTransient();
             Container.Bind<IPoint<int>>().To<BasicPoint>().AsTransient();
             Container.BindInterfacesAndSelfTo<BasicEnemy>().AsTransient();
             Container.Bind<BoardBehaviour>().FromComponentInHierarchy().AsSingle();

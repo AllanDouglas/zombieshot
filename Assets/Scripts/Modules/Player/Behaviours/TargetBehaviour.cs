@@ -21,7 +21,7 @@ namespace Zombieshot.Game
 
         private void Start()
         {
-            this.Weapon = new BasicWeapon(Mathf.Abs(this.speed), 1);
+            this.Weapon = new BasicWeapon(Mathf.Abs(this.speed), 1, range);
         }
 
         // Update is called once per frame
@@ -30,18 +30,17 @@ namespace Zombieshot.Game
             this.Rotate();
         }
 
-
-        public IPoint<Vector2> GetLookPosition()
+        public IPoint<Vector2> GetLookPosition(int tweak = 1)
         {
 
             int angle = (int)transform.eulerAngles.z;
 
-            Vector2 pos = new Vector2(
-                   Mathf.Cos(angle * Mathf.Deg2Rad),
-                   Mathf.Sin(angle * Mathf.Deg2Rad)
+            return new VectorPoint(
+                new Vector2(
+                   Mathf.Cos(angle * Mathf.Deg2Rad) * tweak,
+                   Mathf.Sin(angle * Mathf.Deg2Rad) * tweak
+                )
             );
-
-            return new VectorPoint(pos);            
 
         }
 

@@ -4,7 +4,5 @@
     {
         int Level { get; }
         int Speed { get; }
-        void Die();
-
     }
 }

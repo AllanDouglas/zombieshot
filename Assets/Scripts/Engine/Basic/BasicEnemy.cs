@@ -38,10 +38,6 @@
         {
             this.Health -= amount;
         }
-
-        public void Die()
-        {
-            // TODO
-        }
+        
     }
 }

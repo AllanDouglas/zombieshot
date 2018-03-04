@@ -19,7 +19,7 @@ namespace Src.Tests
             IPoint<int> point = new BasicPoint(1);
             board.Put(item, point);
 
-            Assert.AreSame(item, board.Get(point));
+            Assert.AreSame(item, board.Get(point, new BasicWeapon()));
 
 
         }
@@ -50,7 +50,7 @@ namespace Src.Tests
             IPoint<int> point = new BasicPoint(360);
             board.Put(item, point);
 
-            Assert.AreSame(item, board.Get(new BasicPoint(2)));
+            Assert.AreSame(item, board.Get(new BasicPoint(2), new BasicWeapon()));
 
 
         }
@@ -118,7 +118,7 @@ namespace Src.Tests
             IItem item = new BasicEnemy(range: 5);
             IPoint<int> point = new BasicPoint(1);
             board.Put(item, point);
-            board.Get(new BasicPoint(360));
+            board.Get(new BasicPoint(360), new BasicWeapon());
         }
     }
 }

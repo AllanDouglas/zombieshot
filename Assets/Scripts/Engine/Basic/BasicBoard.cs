@@ -36,11 +36,11 @@ namespace Zombieshot.Engine
             return points.ToArray();
         }
 
-        public IItem Get(IPoint<int> point)
+        public IItem Get(IPoint<int> point, IWeapon weapon)
         {
 
             IItem item;
-            bool founded = this.TouchBy(point, new BasicEnemy(range: 0), out item);
+            bool founded = this.TouchBy(point, new BasicEnemy(range: weapon.Range), out item);
 
             if (founded) return item;
 
@@ -66,6 +66,11 @@ namespace Zombieshot.Engine
             }
 
             this._itens.Add(point.Point, target);
+        }
+
+        public void Remove(IItem target)
+        {
+            //   
         }
 
         private List<int> Points(IItem item, IPoint<int> point)
@@ -98,7 +103,8 @@ namespace Zombieshot.Engine
 
                 var itemPoints = this.Points(item, new BasicPoint(position));
 
-                bool intersect = itemPoints.Exists((index) => {
+                bool intersect = itemPoints.Exists((index) =>
+                {
                     return targePoints.Contains(index);
                 });
 

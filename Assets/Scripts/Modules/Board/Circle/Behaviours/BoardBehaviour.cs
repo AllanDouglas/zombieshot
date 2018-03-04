@@ -13,7 +13,7 @@ namespace Zombieshot.Game
         #endregion
 
         [Inject]
-        private IBoard<IEnemy, Vector2> board;
+        private ICircleBoardService board;
         [Inject]
         private SpawnerEnemyResponseSignal spawner;
         [Inject]

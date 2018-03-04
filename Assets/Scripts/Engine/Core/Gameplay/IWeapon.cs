@@ -1,9 +1,8 @@
 ﻿namespace Zombieshot.Engine
 {
 
-    public interface IWeapon
+    public interface IWeapon : IItem
     {
-
         float Speed { get; }
         float Power { get; }
     }

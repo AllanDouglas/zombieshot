@@ -5,7 +5,7 @@ using Zombieshot.Engine;
 
 namespace Zombieshot.Game
 {
-    public class CircleBoardService : IBoard<IEnemy, Vector2>
+    public class CircleBoardService : ICircleBoardService
     {
         private readonly int _size;
         private readonly float _tweak;
@@ -21,6 +21,14 @@ namespace Zombieshot.Game
             this._radius = radius;
             this._itens = new List<IItem>();
 
+        }
+
+        public int Radius
+        {
+            get
+            {
+                return _radius;
+            }
         }
 
         public IPoint<Vector2>[] FreePointsTo(IEnemy target)
@@ -50,23 +58,30 @@ namespace Zombieshot.Game
             return points.ToArray();
         }
 
-        public IEnemy Get(IPoint<Vector2> point)
+        public IEnemy Get(IPoint<Vector2> point, IWeapon weapon)
         {
             try
             {
-                return this.TouchTo(point.Point * this._radius, new BasicEnemy());
+                return this.TouchTo(point.Point, new BasicEnemy(
+                    range: weapon.Range
+                ));
             }
             catch (Exceptions.BoardException e)
             {
                 throw new Exceptions.BoardException(
                     string.Format("{0}:, {1}", e.Message, point.Point)
-                    );
+                );
             }
         }
 
         public void Put(IEnemy target, IPoint<Vector2> point)
         {
             this._itens.Add(target);
+        }
+
+        public void Remove(IEnemy target)
+        {
+            this._itens.Remove(target);
         }
 
         private IEnemy TouchTo(Vector2 position, IItem target)

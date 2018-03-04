@@ -29,7 +29,7 @@ namespace Src.Tests
             collider.radius = 0.5f;
             go.transform.position = pos;
 
-            Assert.AreSame(enemy, board.Get(new VectorPoint(pos)));
+            Assert.AreSame(enemy, board.Get(new VectorPoint(pos), new BasicWeapon()));
         }
 
         [Test]
@@ -83,7 +83,7 @@ namespace Src.Tests
             collider.radius = 0.5f;
             go.transform.position = pos;
 
-            Assert.AreSame(enemy, board.Get(new VectorPoint(pos2)));
+            Assert.AreSame(enemy, board.Get(new VectorPoint(pos2), new BasicWeapon()));
         }
 
         [Test]
@@ -139,7 +139,8 @@ namespace Src.Tests
             collider.radius = 0.5f;
             go.transform.position = pos;
 
-            Assert.Throws<Zombieshot.Exceptions.BoardException>(() => board.Get(new VectorPoint(pos2)));
+            Assert.Throws<Zombieshot.Exceptions.BoardException>(() =>
+            board.Get(new VectorPoint(pos2), new BasicWeapon()));
 
         }
         [Test]
@@ -154,9 +155,9 @@ namespace Src.Tests
             collider.radius = 0.5f;
             go.transform.position = pos;
 
-            board.Get(new VectorPoint(pos)).Damage(1);
+            board.Get(new VectorPoint(pos), new BasicWeapon()).Damage(1);
 
-            Assert.AreEqual(enemy.Health, board.Get(new VectorPoint(pos)).Health);
+            Assert.AreEqual(enemy.Health, board.Get(new VectorPoint(pos), new BasicWeapon()).Health);
 
         }
 
