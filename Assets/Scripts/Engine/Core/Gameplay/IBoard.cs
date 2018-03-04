@@ -2,7 +2,7 @@
 {
     public interface IBoard<T, H>
     {
-        IPoint<H>[] FreePoints { get; }
+        IPoint<H>[] FreePointsTo(T target);
 
         void Put(T target, IPoint<H> point);
 

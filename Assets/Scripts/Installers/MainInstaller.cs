@@ -9,11 +9,8 @@ namespace Zombieshot.Game
     {
 
         [UnityEngine.SerializeField]
-        private EnemyBehaviour enemyPrefab;
-        [UnityEngine.SerializeField]
-        private EnemySpawner spawnerPrefab;
-
-
+        private BoardEnemyBehaviour enemyPrefab;
+        
         public override void InstallBindings()
         {
 
@@ -27,9 +24,10 @@ namespace Zombieshot.Game
 
         private void General()
         {
-           
-            CircleBoardInstaller.Install(Container);
+            PlayerInstaller.Install(Container);
+            CircleBoardInstaller.Install(Container, enemyPrefab);
             GameControllerInstaller.Install(Container);
+            SpawnerInstaller.Install(Container);
         }
 
         private void PCBundle()

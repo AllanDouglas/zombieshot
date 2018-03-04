@@ -31,11 +31,17 @@ namespace Zombieshot.Game
         }
 
 
-        public IPoint<int> GetLookAngle()
+        public IPoint<Vector2> GetLookPosition()
         {
-            return new BasicPoint(
-                Mathf.RoundToInt(transform.eulerAngles.z)
+
+            int angle = (int)transform.eulerAngles.z;
+
+            Vector2 pos = new Vector2(
+                   Mathf.Cos(angle * Mathf.Deg2Rad),
+                   Mathf.Sin(angle * Mathf.Deg2Rad)
             );
+
+            return new VectorPoint(pos);            
 
         }
 

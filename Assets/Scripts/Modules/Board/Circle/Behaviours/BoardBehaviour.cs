@@ -9,31 +9,50 @@ namespace Zombieshot.Game
     {
         #region Inspector
         [SerializeField]
-        private float size = 2f;
+        private float radio = 2f;
         #endregion
 
         [Inject]
-        private IBoard<IItem, int> board;
-        
+        private IBoard<IEnemy, Vector2> board;
+        [Inject]
+        private SpawnerEnemyResponseSignal spawner;
+        [Inject]
+        private readonly BoardEnemyBehaviour.Pool pool;
 
         // Use this for initialization
         void Start()
         {
-        
+            this.spawner.Listen(this.SpawnerHandler);
         }
 
-        private void Put(EnemyBehaviour enemy)
+        private void OnDestroy()
         {
-            IPoint<int> point = board.FreePoints.Shuffle().First();
+            this.spawner.Unlisten(this.SpawnerHandler);
+        }
 
-            var pos = new Vector2(
-                Mathf.Cos(point.Point * Mathf.Deg2Rad),
-                Mathf.Sin(point.Point * Mathf.Deg2Rad)
-           );
+        private void Put(BoardEnemyBehaviour enemy)
+        {
+            var freePoints = board.FreePointsTo(enemy.Enemy);
 
-            Debug.Log(point.Point);
-            Debug.Log(pos);
-            enemy.transform.position = (pos * this.size);
+            if (freePoints.Length > 0)
+            {
+                IPoint<Vector2> point = freePoints.Shuffle().First();
+                if (point != null)
+                {
+                    this.board.Put(enemy.Enemy, point);
+                    enemy.transform.position = point.Point;
+                }
+            }
+
+
+        }
+
+        private void SpawnerHandler(IEnemy[] enemies)
+        {
+            foreach (IEnemy enemy in enemies)
+            {
+                this.Put(this.pool.Spawn(enemy));
+            }
         }
 
     }

@@ -5,7 +5,7 @@ using Zombieshot.Engine;
 namespace Zombieshot.Game
 {
     [CreateAssetMenu]
-    public class LevelSettings : ScriptableObject
+    public class LevelsSettings : ScriptableObject
     {
         public LevelPayload[] levels;
     }

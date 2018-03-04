@@ -13,7 +13,7 @@ namespace Src.Tests
         public void GetItemAtSamePosition()
         {
 
-            IBoard<IItem, int> board = new CircleBoard();
+            IBoard<IItem, int> board = new BasicBoard();
 
             IItem item = new BasicEnemy(5);
             IPoint<int> point = new BasicPoint(1);
@@ -25,12 +25,28 @@ namespace Src.Tests
         }
 
         [Test]
+        public void MustBeAFullBoard()
+        {
+
+            IBoard<IItem, int> board = new BasicBoard(4);
+
+            IItem item = new BasicEnemy(range: 4);
+            IPoint<int> point = new BasicPoint(1);
+            board.Put(item, point);
+
+            Assert.AreEqual(0, board.FreePointsTo(item).Length);
+
+
+        }
+
+
+        [Test]
         public void GetItemInsideRange()
         {
 
-            IBoard<IItem, int> board = new CircleBoard();
+            IBoard<IItem, int> board = new BasicBoard();
 
-            IItem item = new BasicEnemy(range:5);
+            IItem item = new BasicEnemy(range: 5);
             IPoint<int> point = new BasicPoint(360);
             board.Put(item, point);
 
@@ -43,22 +59,22 @@ namespace Src.Tests
         public void GetAllFreeArea()
         {
 
-            IBoard<IItem, int> board = new CircleBoard();
+            IBoard<IItem, int> board = new BasicBoard(4);
 
-            Assert.AreEqual(360, board.FreePoints.Length);
+            Assert.AreEqual(4, board.FreePointsTo(new BasicEnemy(range: 0)).Length);
 
         }
 
         [Test]
-        public void GetFreeAreaLessOneItemFiveRanged()
+        public void GetFreeAreaLessOneItem()
         {
-            IBoard<IItem, int> board = new CircleBoard();
+            IBoard<IItem, int> board = new BasicBoard(4);
 
-            IItem item = new BasicEnemy(range:5);
+            IItem item = new BasicEnemy(range: 2);
             IPoint<int> point = new BasicPoint(1);
             board.Put(item, point);
 
-            Assert.AreEqual(355, board.FreePoints.Length);
+            Assert.AreEqual(1, board.FreePointsTo(item).Length);
 
         }
 
@@ -76,7 +92,7 @@ namespace Src.Tests
         public void CauseDamage()
         {
 
-            IDamageable target = new BasicEnemy(health:5);
+            IDamageable target = new BasicEnemy(health: 5);
 
             target.Damage(2);
 
@@ -97,9 +113,9 @@ namespace Src.Tests
         private void GetingOutSideItem()
         {
 
-            IBoard<IItem, int> board = new CircleBoard();
+            IBoard<IItem, int> board = new BasicBoard(360);
 
-            IItem item = new BasicEnemy();
+            IItem item = new BasicEnemy(range: 5);
             IPoint<int> point = new BasicPoint(1);
             board.Put(item, point);
             board.Get(new BasicPoint(360));

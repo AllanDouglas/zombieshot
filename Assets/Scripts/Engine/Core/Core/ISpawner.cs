@@ -1,8 +1,8 @@
 ﻿
 namespace Zombieshot.Engine
 {
-    public interface ISpawner<T>
+    public interface ISpawner
     {
-        T Spawn();
+        void Spawn();
     }
 }
