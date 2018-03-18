@@ -7,7 +7,7 @@ namespace Zombieshot.Game
     /// <summary>
     /// 
     /// </summary>
-    public class SpawnerEnemyResponseSignal : Signal<SpawnerEnemyResponseSignal, IEnemy[]>
+    public class SpawnerEnemyResponseSignal : Signal<SpawnerEnemyResponseSignal, EnemyBehaviour[]>
     {
         
     }

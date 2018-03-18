@@ -1,5 +1,3 @@
-using Zombieshot.Game;
-using Zombieshot.Engine;
 using Zenject;
 
 namespace Zombieshot.Game
@@ -9,8 +7,8 @@ namespace Zombieshot.Game
     {
 
         [UnityEngine.SerializeField]
-        private BoardEnemyBehaviour enemyPrefab;
-        
+        private EnemyBehaviour enemyPrefab;        
+
         public override void InstallBindings()
         {
 
@@ -25,9 +23,11 @@ namespace Zombieshot.Game
         private void General()
         {
             PlayerInstaller.Install(Container);
-            CircleBoardInstaller.Install(Container, enemyPrefab);
+            CircleBoardInstaller.Install(Container);
             GameControllerInstaller.Install(Container);
             SpawnerInstaller.Install(Container);
+            WorldInstaller.Install(Container);
+            EnemyInstaller.Install(Container, enemyPrefab);
         }
 
         private void PCBundle()

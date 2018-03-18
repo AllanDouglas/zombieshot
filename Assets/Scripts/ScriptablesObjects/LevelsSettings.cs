@@ -1,6 +1,4 @@
-﻿using UnityEditor;
-using UnityEngine;
-using Zombieshot.Engine;
+﻿using UnityEngine;
 
 namespace Zombieshot.Game
 {

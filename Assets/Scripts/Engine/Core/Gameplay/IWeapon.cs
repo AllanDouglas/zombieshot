@@ -5,5 +5,6 @@
     {
         float Speed { get; }
         float Power { get; }
+        float ReloadTime { get; }
     }
 }

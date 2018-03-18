@@ -1,5 +1,4 @@
 ﻿using System;
-using UnityEngine;
 using Zenject;
 using Zombieshot.Engine;
 
@@ -12,11 +11,11 @@ namespace Zombieshot.Game
         private ISpawner spawner;
         private TargetBehaviour player;
         private ICircleBoardService board;
-        private BoardEnemyBehaviour.Pool enemyPool;
+        private EnemyBehaviour.Pool enemyPool;
 
         [Inject]
         public GameControllerService(
-            BoardEnemyBehaviour.Pool enemyPool,
+            EnemyBehaviour.Pool enemyPool,
             IInputManager inputManager,
             TargetBehaviour weapon,
             ICircleBoardService board,
@@ -37,21 +36,25 @@ namespace Zombieshot.Game
 
         private void OnTouch()
         {
-            var pos = this.player.GetLookPosition(this.board.Radius);
-            try
+            if (this.player.CanShot)
             {
-                this.EnemyFound(this.board.Get(pos, this.player.Weapon));
+                var pos = this.player.Shot(this.board.Radius);
+                try
+                {
+                    this.EnemyFound(this.board.Get(pos, this.player.Weapon));
+                }
+                catch (Exceptions.BoardException)
+                { }
             }
-            catch (Exceptions.BoardException)
-            { }
-
         }
 
         private void EnemyFound(IEnemy enemy)
         {
             enemy.Damage((int)this.player.Weapon.Power);
 
-            if(enemy.Health <= 0)
+            UnityEngine.Debug.Log(enemy);
+
+            if (enemy.Health <= 0)
             {
                 this.enemyPool.Despawn(enemy);
             }

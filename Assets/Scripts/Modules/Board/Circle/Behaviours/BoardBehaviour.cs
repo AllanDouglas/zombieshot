@@ -16,8 +16,6 @@ namespace Zombieshot.Game
         private ICircleBoardService board;
         [Inject]
         private SpawnerEnemyResponseSignal spawner;
-        [Inject]
-        private readonly BoardEnemyBehaviour.Pool pool;
 
         // Use this for initialization
         void Start()
@@ -30,7 +28,7 @@ namespace Zombieshot.Game
             this.spawner.Unlisten(this.SpawnerHandler);
         }
 
-        private void Put(BoardEnemyBehaviour enemy)
+        private void Put(EnemyBehaviour enemy)
         {
             var freePoints = board.FreePointsTo(enemy.Enemy);
 
@@ -39,19 +37,19 @@ namespace Zombieshot.Game
                 IPoint<Vector2> point = freePoints.Shuffle().First();
                 if (point != null)
                 {
-                    this.board.Put(enemy.Enemy, point);
-                    enemy.transform.position = point.Point;
+                    board.Put(enemy.Enemy, point);
+                    enemy.Target.position = point.Point;
                 }
             }
 
 
         }
 
-        private void SpawnerHandler(IEnemy[] enemies)
+        private void SpawnerHandler(EnemyBehaviour[] enemies)
         {
-            foreach (IEnemy enemy in enemies)
+            foreach (EnemyBehaviour enemy in enemies)
             {
-                this.Put(this.pool.Spawn(enemy));
+                this.Put(enemy);
             }
         }
 

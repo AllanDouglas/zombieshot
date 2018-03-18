@@ -86,14 +86,22 @@ namespace Zombieshot.Game
 
         private IEnemy TouchTo(Vector2 position, IItem target)
         {
-            float radius = (float)target.Range / _tweak;
-            var collider = Physics2D.OverlapCircle(position, radius);
+            float radius = target.Range / _tweak;
+            var collider = Physics2D.OverlapCircle(position, target.Range / _tweak);
 
             try
             {
                 if (collider != null)
                 {
-                    return collider.gameObject.GetComponent<BoardEnemyBehaviour>().Enemy;
+
+                    var enemy = collider.gameObject.GetComponentInParent<EnemyBehaviour>();
+
+                    if (!enemy)
+                    {
+                        collider.gameObject.GetComponent<EnemyBehaviour>();
+                    }
+
+                    return enemy.Enemy;
                 }
 
                 throw new Exceptions.BoardException("Item not found");

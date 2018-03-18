@@ -1,17 +1,10 @@
-using UnityEngine;
 using Zenject;
 using Zombieshot.Engine;
 
 namespace Zombieshot.Game
 {
-    public class CircleBoardInstaller : Installer<BoardEnemyBehaviour, CircleBoardInstaller>
-    {
-        private BoardEnemyBehaviour enemyPrefab;
-
-        public CircleBoardInstaller(BoardEnemyBehaviour enemyBehaviour)
-        {
-            this.enemyPrefab = enemyBehaviour;
-        }
+    public class CircleBoardInstaller : Installer<CircleBoardInstaller>
+    {  
 
         public override void InstallBindings()
         {
@@ -19,13 +12,6 @@ namespace Zombieshot.Game
             Container.Bind<IPoint<int>>().To<BasicPoint>().AsTransient();
             Container.BindInterfacesAndSelfTo<BasicEnemy>().AsTransient();
             Container.Bind<BoardBehaviour>().FromComponentInHierarchy().AsSingle();
-
-            Container.BindMemoryPool<BoardEnemyBehaviour, BoardEnemyBehaviour.Pool>()
-                .WithInitialSize(5)
-                .FromComponentInNewPrefab(enemyPrefab)
-                .UnderTransformGroup("Enemies")
-                .NonLazy();
-
         }
     }
 }
