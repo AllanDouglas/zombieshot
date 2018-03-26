@@ -24,7 +24,17 @@ namespace Zombieshot.Game
         private Transform board;
         [SerializeField]
         private Transform world;
+        [Header("Tweaks")]
+        [SerializeField]
+        [Tooltip("the speed will be divide by this value")]
+        private float speedTweak = 10.0f;
         #endregion
+
+        #region Dependecies
+        [Inject]
+        private EnemyDestroyedSignal enemyDestroyedSignal;
+        #endregion
+
 
         public IEnemy Enemy
         {
@@ -61,7 +71,15 @@ namespace Zombieshot.Game
         /// </summary>
         void Update()
         {
-            this.world.Translate(Vector2.left * this.speed * Time.deltaTime);
+            this.world.Translate(Vector2.left * (this.speed / this.speedTweak) * Time.deltaTime);
+        }
+
+        protected virtual void OnDespawned()
+        {
+            if (this.Enemy.Health <= 0)
+            {
+                this.enemyDestroyedSignal.Fire(this.Enemy);
+            }
         }
 
         public class Pool : MonoMemoryPool<EnemyBehaviour>
@@ -77,8 +95,9 @@ namespace Zombieshot.Game
 
             protected override void OnDespawned(EnemyBehaviour item)
             {
-                base.OnDespawned(item);
+                item.OnDespawned();
                 this.activeItens.Remove(item);
+                base.OnDespawned(item);
             }
 
             public void Despawn(IEnemy enemy)

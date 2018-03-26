@@ -7,7 +7,7 @@ namespace Zombieshot.Game
     {
 
         [UnityEngine.SerializeField]
-        private EnemyBehaviour enemyPrefab;        
+        private EnemyBehaviour enemyPrefab;
 
         public override void InstallBindings()
         {

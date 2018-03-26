@@ -11,8 +11,9 @@ namespace Zombieshot.Game
     [System.Serializable]
     public sealed class WavePayload
     {
-        public int amount;
-        public int enemyLevel;
+        [Tooltip("Amount enimies will be spawned")]
+        public int amountEnimies;
+        public EnemyBehaviour[] enimies;
     }
 
     [System.Serializable]

@@ -1,35 +1,31 @@
-﻿using Zenject;
+using Zenject;
 using Zombieshot.Engine;
 
 namespace Zombieshot.Game
 {
 
-    /// <summary>
-    /// 
-    /// </summary>
-    public class EnemyInstaller : Installer<EnemyBehaviour, EnemyInstaller>
+    public class PlaygroundInstalller : MonoInstaller
     {
-        private EnemyBehaviour enemyPrefab;
-
-        public EnemyInstaller(EnemyBehaviour enemyPrefab)
-        {
-            this.enemyPrefab = enemyPrefab;
-        }
-
+        public EnemyBehaviour enemyPrefab;
         public override void InstallBindings()
         {
+            PCInputInstaller.Install(Container);
+            EnemyInstall();
+        }
 
+        private void EnemyInstall()
+        {
+            
             Container.BindFactory<EnemyPayload, IEnemy, EnemyBehaviour.Factory>()
-                .FromFactory<EnemyFactory>();
-
+              .FromFactory<EnemyFactory>();
             Container.DeclareSignal<EnemyDestroyedSignal>();
-
             Container.BindMemoryPool<EnemyBehaviour, EnemyBehaviour.Pool>()
                   .WithInitialSize(5)
                   .FromComponentInNewPrefab(enemyPrefab)
                   .UnderTransformGroup("Enemies")
                   .NonLazy();
         }
+
     }
 
 }
